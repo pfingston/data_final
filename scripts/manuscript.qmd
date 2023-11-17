@@ -1,0 +1,53 @@
+---
+title: "manuscript"
+format: pdf
+editor: visual
+author: "Leah Peterson, Alexus Rock, and Ben Pfingston"
+---
+
+```{r}
+#| include: FALSE
+library(tidyverse)
+library(here)
+library(rio)
+library(psych)
+```
+
+```{r}
+#| echo: FALSE
+communication <- import(here("data", "communication"))
+```
+
+
+# Introduction
+
+(Joe asked us about the specific hypotheses guiding our paper. My suggestion is that we are curious about relations between suspicion and young adults' privacy perceptions, as well as gender differences in young adults suspicion and privacy perceptions)
+
+# Method
+
+## Sample
+
+104 participants were recruited primarily through an undergraduate student body located in Minnesota. The participation criteria required that participants be at least 18 years old and have interacted with a teacher in a school setting. Demographic information, such as age, gender identity, and ethnic-racial identity was also collected.
+
+## Measures
+
+To measure different aspects of student-teacher trust interactions, items were modified from Ledbetter and Vik’s (2012) Parental Privacy Invasions Scale (PPIS) and Levine and McCornack’s (1991) Suspicion Scale. 
+
+### Modified Parental Privacy Invasions Scale
+Eleven items were adapted from the Parental Privacy Invasions Scale to reflect teacher, rather than parental, interactions. Each item was measured on a five-point Likert scale, ranging from 0 to 4, with response options including, “Never”, “Rarely”, “Often”, “Sometimes”, and “Always”. 
+
+Three items were modified the Parental Invasive Behavior subscale of the PPIS to measure student perceptions of invasive behaviors from their teachers. One example item from this subscale is, “My teachers demand that I change my behavior in some area of my life.” 
+
+The other 8 modified items came from the Children’s Defensive Behavior subscale, which captured the young adults’ self-reports of behaviors to safeguard their privacy from their teachers. An example of an item from this subscale is, “ I avoid going to see my teacher outside of normal school/class hours. (such as before or after class, during break, before or after school tutoring).”
+
+### Modified Suspicion Scale
+
+Twelve items were adapted from the Suspicion Scale to capture young adults' suspicion toward their teachers. Each item was measured on a seven-point Likert scale, ranging from 0-6, with response options including, "Strongly Disagree", "Somewhat Disagree", "Disagree", "Neither Agree nor Disagree", "Somewhat Agree", "Agree", and "Strongly Agree". Example items from the scale include, "Basically I am a trusting person", and "Most teachers follow the saying "honesty is the best policy."
+
+# Results
+
+# Discussion
+
+# References
+
+
