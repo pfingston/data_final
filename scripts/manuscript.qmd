@@ -11,14 +11,44 @@ library(tidyverse)
 library(here)
 library(rio)
 library(psych)
+library(janitor)
 ```
 
 ```{r}
 #| echo: FALSE
-communication <- import(here("data", "communication"))
+communication <- import(here("data", "communication.csv"))
+communication <- (clean_names(communication))
+```
+
+```{r}
+#| echo: FALSE
+
+#creating the new variables: the ppis subscale 1/parental invasive behaviors score, the ppis subscale 2/student defensive behaviors score, and the suspicion scale score
+comm <- communication %>%
+  mutate(ppis_1_score = rowSums(communication[,5:7])) %>%
+  mutate(ppis_2_score = rowSums(communication[,8:15])) %>%
+  mutate(ss_score = rowSums(communication[,16:27]))
+
+comm <- comm %>%
+  mutate(ppis_total = ppis_1_score + ppis_2_score)
+```
+
+```{r}
+#| echo: FALSE
+
+#pivoting the data, also removing unnecessary columns
+communication <- pivot_longer(comm,
+                      cols = ppis_1_1:ss_12,
+                      names_to = "item",
+                      values_to = "score")
+
+communication <- select(communication, -c(2:7))
 ```
 
 
+```{r}
+#for ben to do later: create summarize data frames to create into a table
+```
 # Introduction
 
 (Joe asked us about the specific hypotheses guiding our paper. My suggestion is that we are curious about relations between suspicion and young adults' privacy perceptions, as well as gender differences in young adults suspicion and privacy perceptions)
