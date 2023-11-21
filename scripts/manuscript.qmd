@@ -12,6 +12,7 @@ library(here)
 library(rio)
 library(psych)
 library(janitor)
+library(ggplot2)
 ```
 
 ```{r}
@@ -45,10 +46,56 @@ communication <- pivot_longer(comm,
 communication <- select(communication, -c(2:7))
 ```
 
-
 ```{r}
 #for ben to do later: create summarize data frames to create into a table
 ```
+
+#Data Visualizations
+
+```{r boxplot-gender-ppis-1-score, warning=FALSE, echo=FALSE}
+
+ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
+  geom_boxplot() +
+  theme(legend.position = "none") +
+  labs(x = "Gender",
+       y = "Parental Invasive Behaviors Score",
+       title = "Boxplot of Parental Invasive Behaviors Score by Gender")
+
+```
+
+```{r boxplot-gender-ppis-2-score, warning=FALSE, echo=FALSE}
+
+ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
+  geom_boxplot() +
+  theme(legend.position = "none") +
+  labs(x = "Gender",
+       y = "Student Defensive Behaviors Score",
+       title = "Boxplot of Student Defensive Behaviors Score by Gender")
+
+```
+
+```{r boxplot-gender-ppis-total, warning=FALSE, echo=FALSE}
+
+ggplot(communication, aes(gender, ppis_total, fill=gender)) +
+  geom_boxplot() +
+  theme(legend.position = "none") +
+  labs(x = "Gender",
+       y = "Parental Privacy Invasion Scale Total",
+       title = "Boxplot of Parental Privacy Invasion Scale Total by Gender")
+
+```
+
+```{r boxplot-gender-ss-score, warning=FALSE, echo=FALSE}
+
+ggplot(communication, aes(gender, ss_score, fill=gender)) +
+  geom_boxplot() + 
+  theme(legend.position="none") +
+  labs(x = "Gender",
+       y = "Suspicion Scale Score",
+       title = "Boxplot of Suspicion Scale Score by Gender")
+
+```
+
 # Introduction
 
 (Joe asked us about the specific hypotheses guiding our paper. My suggestion is that we are curious about relations between suspicion and young adults' privacy perceptions, as well as gender differences in young adults suspicion and privacy perceptions)
@@ -61,23 +108,22 @@ communication <- select(communication, -c(2:7))
 
 ## Measures
 
-To measure different aspects of student-teacher trust interactions, items were modified from Ledbetter and Vik’s (2012) Parental Privacy Invasions Scale (PPIS) and Levine and McCornack’s (1991) Suspicion Scale. 
+To measure different aspects of student-teacher trust interactions, items were modified from Ledbetter and Vik's (2012) Parental Privacy Invasions Scale (PPIS) and Levine and McCornack's (1991) Suspicion Scale.
 
 ### Modified Parental Privacy Invasions Scale
-Eleven items were adapted from the Parental Privacy Invasions Scale to reflect teacher, rather than parental, interactions. Each item was measured on a five-point Likert scale, ranging from 0 to 4, with response options including, “Never”, “Rarely”, “Often”, “Sometimes”, and “Always”. 
 
-Three items were modified the Parental Invasive Behavior subscale of the PPIS to measure student perceptions of invasive behaviors from their teachers. One example item from this subscale is, “My teachers demand that I change my behavior in some area of my life.” 
+Eleven items were adapted from the Parental Privacy Invasions Scale to reflect teacher, rather than parental, interactions. Each item was measured on a five-point Likert scale, ranging from 0 to 4, with response options including, "Never", "Rarely", "Often", "Sometimes", and "Always".
 
-The other 8 modified items came from the Children’s Defensive Behavior subscale, which captured the young adults’ self-reports of behaviors to safeguard their privacy from their teachers. An example of an item from this subscale is, “ I avoid going to see my teacher outside of normal school/class hours. (such as before or after class, during break, before or after school tutoring).”
+Three items were modified the Parental Invasive Behavior subscale of the PPIS to measure student perceptions of invasive behaviors from their teachers. One example item from this subscale is, "My teachers demand that I change my behavior in some area of my life."
+
+The other 8 modified items came from the Children's Defensive Behavior subscale, which captured the young adults' self-reports of behaviors to safeguard their privacy from their teachers. An example of an item from this subscale is, " I avoid going to see my teacher outside of normal school/class hours. (such as before or after class, during break, before or after school tutoring)."
 
 ### Modified Suspicion Scale
 
-Twelve items were adapted from the Suspicion Scale to capture young adults' suspicion toward their teachers. Each item was measured on a seven-point Likert scale, ranging from 0-6, with response options including, "Strongly Disagree", "Somewhat Disagree", "Disagree", "Neither Agree nor Disagree", "Somewhat Agree", "Agree", and "Strongly Agree". Example items from the scale include, "Basically I am a trusting person", and "Most teachers follow the saying "honesty is the best policy."
+Twelve items were adapted from the Suspicion Scale to capture young adults' suspicion toward their teachers. Each item was measured on a seven-point Likert scale, ranging from 0-6, with response options including, "Strongly Disagree", "Somewhat Disagree", "Disagree", "Neither Agree nor Disagree", "Somewhat Agree", "Agree", and "Strongly Agree". Example items from the scale include, "Basically I am a trusting person", and "Most teachers follow the saying"honesty is the best policy."
 
 # Results
 
 # Discussion
 
 # References
-
-
