@@ -50,16 +50,17 @@ communication <- select(communication, -c(2:7))
 #for ben to do later: create summarize data frames to create into a table
 ```
 
-#Data Visualizations
+# Data Visualizations
 
 ```{r boxplot-gender-ppis-1-score, warning=FALSE, echo=FALSE}
 
 ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
   geom_boxplot() +
   theme(legend.position = "none") +
+    scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
   labs(x = "Gender",
-       y = "Parental Invasive Behaviors Score",
-       title = "Boxplot of Parental Invasive Behaviors Score by Gender")
+       y = "Teacher Invasive Behaviors Score",
+       title = "Boxplot of Teacher Invasive Behaviors Score by Gender")
 
 ```
 
@@ -68,6 +69,7 @@ ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
 ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
   geom_boxplot() +
   theme(legend.position = "none") +
+  scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
   labs(x = "Gender",
        y = "Student Defensive Behaviors Score",
        title = "Boxplot of Student Defensive Behaviors Score by Gender")
@@ -79,9 +81,10 @@ ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
 ggplot(communication, aes(gender, ppis_total, fill=gender)) +
   geom_boxplot() +
   theme(legend.position = "none") +
+    scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
   labs(x = "Gender",
-       y = "Parental Privacy Invasion Scale Total",
-       title = "Boxplot of Parental Privacy Invasion Scale Total by Gender")
+       y = "Teacher Privacy Invasion Scale Total",
+       title = "Boxplot of Teacher Privacy Invasion Scale Total by Gender")
 
 ```
 
@@ -89,12 +92,31 @@ ggplot(communication, aes(gender, ppis_total, fill=gender)) +
 
 ggplot(communication, aes(gender, ss_score, fill=gender)) +
   geom_boxplot() + 
+  scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
   theme(legend.position="none") +
   labs(x = "Gender",
        y = "Suspicion Scale Score",
        title = "Boxplot of Suspicion Scale Score by Gender")
 
 ```
+
+```{r}
+#| label: scatterplot
+#| warning: false
+#| message: false
+#| echo: false
+
+ggplot(comm, aes(ss_score, ppis_total)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  labs(title = "Student's Trustworthiness and Teacher Privacy Invasions", 
+       x = "Own Precieved Trustworthiness",
+       y = "Teacher Privacy Invasions") +
+  theme_minimal()
+```
+
+
+
 
 # Introduction
 
