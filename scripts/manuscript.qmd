@@ -13,6 +13,8 @@ library(rio)
 library(psych)
 library(janitor)
 library(ggplot2)
+
+#comment from Frances: I'm not familiar with the psych package - where are you using it?
 ```
 
 ```{r}
@@ -60,7 +62,10 @@ ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
     scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
   labs(x = "Gender",
        y = "Teacher Invasive Behaviors Score",
-       title = "Boxplot of Teacher Invasive Behaviors Score by Gender")
+       title = "Boxplot of Teacher Invasive Behaviors Score by Gender",
+       subtitle = "Sampled from undergraduate student population in Minnesota, (year?)")
+
+#added a subtitle to indicate age, location, and year of participant survey
 
 ```
 
@@ -98,6 +103,8 @@ ggplot(communication, aes(gender, ss_score, fill=gender)) +
        y = "Suspicion Scale Score",
        title = "Boxplot of Suspicion Scale Score by Gender")
 
+#comment from Frances: I like these boxplots - the data is super clear! You may consider adding a subtitle with a little more information about the study (age, year data was collected, etc.) 
+
 ```
 
 ```{r}
@@ -114,9 +121,6 @@ ggplot(comm, aes(ss_score, ppis_total)) +
        y = "Teacher Privacy Invasions") +
   theme_minimal()
 ```
-
-
-
 
 # Introduction
 
