@@ -8,6 +8,17 @@ warning : false
 message : false
 echo : false
 ---
+```{r}
+# Hi! Danielle here. Your code looks so clean! It is super easy to follow.
+# All of your data and figures loaded properly too. Great job!
+# I have never seen the "scale_x_discrete" code before so I definitely learned that from your code.
+# I really appreciated how you left a note in your code explaining the new labels/why you labeled something the way you did for your collaborators. Super helpful!
+# I noticed that you labeled all the code chunks with box plots so I made a label from your code chunk for the scatter plot following the same format - "scatterplot-ss-score-ppis-total"
+```
+
+
+
+
 
 ```{r}
 #| include: FALSE
@@ -105,7 +116,7 @@ ggplot(communication, aes(gender, ss_score, fill=gender)) +
 
 ```
 
-```{r}
+```{r scatterplot-ss-score-ppis-total}
 #| label: scatterplot
 #| warning: false
 #| message: false
