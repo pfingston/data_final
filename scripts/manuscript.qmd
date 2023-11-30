@@ -4,6 +4,9 @@ format: pdf
 editor: visual
 author: "Leah Peterson, Alexus Rock, and Ben Pfingston"
 bibliography: biblio.bib
+warning : false
+message : false
+echo : false
 ---
 
 ```{r}
@@ -11,7 +14,6 @@ bibliography: biblio.bib
 library(tidyverse)
 library(here)
 library(rio)
-library(psych)
 library(janitor)
 library(ggplot2)
 ```
@@ -32,7 +34,9 @@ comm <- communication %>%
   mutate(ss_score = rowSums(communication[,16:27]))
 
 comm <- comm %>%
-  mutate(ppis_total = ppis_1_score + ppis_2_score)
+  mutate(ppis_total = ppis_1_score + ppis_2_score,
+         age = as.numeric(age)) %>%  # Convert age column to numeric
+  filter(!is.na(age))
 ```
 
 ```{r}
@@ -107,36 +111,52 @@ ggplot(communication, aes(gender, ss_score, fill=gender)) +
 #| message: false
 #| echo: false
 
+model <- lm(ppis_total ~ ss_score, comm)
+slope <- coef(model)[2] %>% round(2)
+
+
 ggplot(comm, aes(ss_score, ppis_total)) +
   geom_point() +
-  geom_smooth(method = "lm") +
+  geom_smooth(method = "lm", color="darkgreen") +
   labs(title = "Student's Trustworthiness and Teacher Privacy Invasions", 
        x = "Own Precieved Trustworthiness",
        y = "Teacher Privacy Invasions") +
+   geom_text(x = 30, y = 4,
+     label = sprintf("Slope: %.2f", coef(lm(ppis_total ~ ss_score, data = comm))[2])) +
   theme_minimal()
+
+mean_age <- mean(comm$age) %>% round(2)
+sd_age <- sd(comm$age) %>% round(2)
+
 ```
 
 # Introduction
 
-By the time a child turns 18, they have spent approximately 15% of their life at school [@wherry2004]. Thus, for many young adults, teachers they've encountered are often some of the most influential people in shaping their current knowledge base. In addition to influencing student learning and test-scores, supportive teacher communication behaviors have been shown to impact feelings of satisfaction and self-efficacy [@blazar2016; @frymier2000; @chesebro2000]. Additionally, @Bruney2013 found that teacher relationships are crucial for a young adult's independent thinking skills, which can lead to a greater life satisfaction. While childhood is often associated with growth and development, young adulthood is also a time of great advancement in life [@parks2005]. During this period, young adults are beginning to apply the knowledge they have gained throughout their lives without direct guidance from a parent or authority figure. As such, to be successful in this stage of life, young adults need a strong foundation in independent thinking [@Bruney2013]. In order to build that foundation, experiences of trustful interpersonal relationships with parents, coaches, and teachers are essential in providing support as young adults reconfigure their identities [@parks2005]. Yet, there is a dearth of research focused on investigating the ways in which overall trust of young adults may be influenced by teachers' communicative behaviors.
+By the time a child turns 18, they have spent approximately 15% of their life at school [@wherry2004]. Thus, for many young adults, teachers they've encountered are often some of the most influential people in shaping their current knowledge base. In addition to influencing student learning and test-scores, supportive teacher communication behaviors have been shown to impact feelings of satisfaction and self-efficacy [@blazar2016; @frymier2000; @chesebro2000]. Additionally, @Bruney2013 found that teacher relationships are crucial for a young adult's independent thinking skills, which can lead to a greater life satisfaction. While childhood is often associated with growth and development, young adulthood is also a time of great advancement in life [@parks2005]. During this period, young adults are beginning to apply the knowledge they have gained throughout their lives without direct guidance from a parent or authority figure. As such, to be successful in this stage of life, young adults need a strong foundation in independent thinking [@Bruney2013]. In order to build that foundation, experiences of trustful interpersonal relationships with authority figures, such as teachers, are essential in providing support as young adults reconfigure their identities [@parks2005]. Yet, there is a dearth of research focused on investigating the ways in which overall trust of young adults may be influenced by teachers' communicative behaviors.
 
 ## (Dis)Trust & Invasive Behaviors
 
-Trust is a multifaceted concept that encompasses elements such as honesty, connectedness, reliability, and competency [@simpson2007a; @raider-roth2005]. Further, trust is not an automatic feature in a relationship. Caring for and emotional investment in interactions has been shown to be an important factor for building trust [@kuhlmann2008; @smith2005].
+Trust is a multifaceted concept that encompasses elements such as honesty, connectedness, reliability, and competency [@simpson2007; @raider-roth2005]. Further, trust is not an automatic feature in a relationship. Caring for and emotional investment in interactions has been shown to be an important factor for building trust [@kuhlmann2008; @smith2005]. When there is trust in a relationship, commonly individuals act consistently, follow through, and work to meet expectations [@lewicki2006]. Alternatively, when trust has not been cultivated in a relationship, individuals exhibit greater anti-social behaviors and have impaired psychological adjustment [@simpson2007]. Additionally, trust in relationships can be broken. Specifically, broken trust that is accompanied by invasive behaviors or deception creates the most harm in a relationship and that trust may never fully recover [@schweitzer2006a].
 
-Additionally, trust has commonly been viewed as the "glue" that holds together our social order [@rotenberg1995].
+According to @ledbetter2012, invasive behaviors are those that intend to violate an individual's privacy. There are three main categories for invasive behaviors: subversive or spatial invasions, direct or verbal invasions and mediated invasions [@ledbetter2012; @petronio2002]. Subversive or spatial invasions are acts such as eavesdropping and listening to phone conversations or searching through belongings [@ledbetter2012; @petronio2002]. Direct or verbal invasions are when something is said directly to the individual who is keeping their information private [@ledbetter2012; @petronio2002]. Lastly, mediated invasions are when an investigation for information happens through going on someone's social media account, reading emails or text messages or tracking phone activity [@ledbetter2012]. When trust is broken, individuals commonly are less likely to maintain or create relationships with others in the future, experience anger, become less cooperative in group settings, and give negative evaluations of others [@ledbetter2012; @lount2008; @simpson2007]. Thus, it is hypothesized that individuals who are more trustworthy will perceive less privacy invasions.
 
-(Joe asked us about the specific hypotheses guiding our paper. My suggestion is that we are curious about relations between suspicion and young adults' privacy perceptions, as well as gender differences in young adults suspicion and privacy perceptions)
+## Trust & Gender
+
+Socialization perspectives on gender differences propose that women are more inclined to define themselves in relational terms compared to men [@cross1997]. This inclination makes women particularly motivated to cultivate positive and nurturing relationships [@cross2000; @amanatullah2008]. In the context of social relationships, trust has commonly been viewed as the "glue" that holds the relationship together [@rotenberg1995]. Additionally, following a trust transgression, women are more likely than men to maintain trust in the relationship [@haselhuhn]. Thus, it is hypothesized that there will be differences in how female, male, and non-binary individuals perceive their own levels of trust towards others, and how they experience privacy invasions.
 
 # Method
 
 ## Sample
 
-104 participants were recruited primarily through an undergraduate student body located in Minnesota. The participation criteria required that participants be at least 18 years old and have interacted with a teacher in a school setting. Demographic information, such as age, gender identity, and ethnic-racial identity was also collected.
+98 participants were recruited primarily through an undergraduate student body located in Minnesota. The participation criteria required that participants be at least 18 years old (*M =* `r mean_age`, *SD =* `r sd_age`) and have interacted with a teacher in a school setting. Demographic information, such as gender identity and ethnic-racial identity, was also collected.
+
+## Procedure
+
+Participants were provided with a link to the survey, which was conducted through the online system Qualtrics. Before the survey began, each participant was given an online consent form that provided information about the length of the survey, confidentiality, their ability to withdraw from the study at any time and contact information for the researchers.
 
 ## Measures
 
-To measure different aspects of student-teacher trust interactions, items were modified from Ledbetter and Vik's (2012) Parental Privacy Invasions Scale (PPIS) and Levine and McCornack's (1991) Suspicion Scale.
+To measure different aspects of student-teacher trust interactions, items were modified from the @ledbetter2012 Parental Privacy Invasions Scale (PPIS) and the @levine1991 Suspicion Scale.
 
 ### Modified Parental Privacy Invasions Scale
 
@@ -152,6 +172,10 @@ Twelve items were adapted from the Suspicion Scale to capture young adults' susp
 
 # Results
 
+We used R (Version 4.3.2; @R) and the R-packages *ggplot2* [@ggplot], *here* [@here], *janitor* [@janitor], *rio* [@rio], and *tidyverse* [@tidy] for all our analyses.
+
 # Discussion
+
+\newpage
 
 # References
