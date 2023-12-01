@@ -20,9 +20,11 @@ library(ggplot2)
 
 ```{r}
 #| echo: FALSE
-communication <- import(here("data", "communication.csv"))
-communication <- (clean_names(communication))
+communication <- import(here("data", "communication.csv")) %>% 
+  clean_names()
 ```
+
+Instead of feeding the data into the the `clean_name()` function with another line of code, I suggest piping it directly into `clean_name()`. I borrowed this from Dr.Nese's slides and found it convenient. 
 
 ```{r}
 #| echo: FALSE
