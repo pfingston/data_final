@@ -75,6 +75,10 @@ ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
 
 ```
 
+I didn't know that `theme(legend.position = "none")` can omit the legend -- another thing I learned from your group! I have looked up  `scale_x_discrete()` before (but am not familiar with its use) and it's cool to see how you set the values for x scale aesthetics. 
+
+I also appreciate your naming conventions for each code chunk. This makes code editing and collaboration smoother. 
+
 ```{r boxplot-gender-ppis-2-score, warning=FALSE, echo=FALSE}
 
 ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
