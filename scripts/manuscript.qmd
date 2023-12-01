@@ -20,9 +20,11 @@ library(ggplot2)
 
 ```{r}
 #| echo: FALSE
-communication <- import(here("data", "communication.csv"))
-communication <- (clean_names(communication))
+communication <- import(here("data", "communication.csv")) %>% 
+  clean_names()
 ```
+
+Instead of feeding the data into the the `clean_name()` function with another line of code, I suggest piping it directly into `clean_name()`. I borrowed this from Dr.Nese's slides and found it convenient. 
 
 ```{r}
 #| echo: FALSE
@@ -38,6 +40,10 @@ comm <- comm %>%
          age = as.numeric(age)) %>%  # Convert age column to numeric
   filter(!is.na(age))
 ```
+
+I appreciate the way you selected using brackets, which made the code cleaner than listing out all options. 
+
+One big strength I'd like to learn from your group is that you keep notes (in comments) of what each code chunk is doing. This is a good coding habit I have heard before but haven't incorporated into my own practice. It'll make revisiting old projects so much easier!
 
 ```{r}
 #| echo: FALSE
@@ -68,6 +74,10 @@ ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
        title = "Boxplot of Teacher Invasive Behaviors Score by Gender")
 
 ```
+
+I didn't know that `theme(legend.position = "none")` can omit the legend -- another thing I learned from your group! I have looked up  `scale_x_discrete()` before (but am not familiar with its use) and it's cool to see how you set the values for x scale aesthetics. 
+
+I also appreciate your naming conventions for each code chunk. This makes code editing and collaboration smoother. 
 
 ```{r boxplot-gender-ppis-2-score, warning=FALSE, echo=FALSE}
 
@@ -129,6 +139,8 @@ mean_age <- mean(comm$age) %>% round(2)
 sd_age <- sd(comm$age) %>% round(2)
 
 ```
+
+Wow impressive specification of your figure here. I always struggle with the detailed ggplot arguments to get the vis I want exactly. This usually takes a lot of time and digging through code manuals (web pages). I commend you!! (and saved the ` geom_text(x = 30, y = 4, label = sprintf)...` code for potential future use.) 
 
 # Introduction
 
