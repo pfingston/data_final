@@ -16,6 +16,7 @@ library(here)
 library(rio)
 library(janitor)
 library(ggplot2)
+library(papaja)
 ```
 
 ```{r}
@@ -112,6 +113,7 @@ ggplot(communication, aes(gender, ss_score, fill=gender)) +
 #| echo: false
 
 model <- lm(ppis_total ~ ss_score, comm)
+modelresults <- apa_print(model)
 slope <- coef(model)[2] %>% round(2)
 
 
@@ -174,7 +176,19 @@ Twelve items were adapted from the Suspicion Scale to capture young adults' susp
 
 We used R (Version 4.3.2; @R) and the R-packages *ggplot2* [@ggplot], *here* [@here], *janitor* [@janitor], *rio* [@rio], and *tidyverse* [@tidy] for all our analyses.
 
+Privacy invasions and self-rated trustworthiness were not found to be correlated. Self-rated trustworthiness was not a significant predictor of privacy invasions (`r modelresults$full_result$ss_score`).
+
+Gender differences existed for teacher invasive behaviors. Non-binary individuals perceived their teachers behaviors as being less invasive than females and males perceptions. Gender differences existed for teacher privacy invasion. Males perceived their teachers invading their privacy less than female and non-binary individuals. There were gender differences in the amount of suspicion towards teachers. Females had the highest levels of suspicion towards their teachers, and non-binary individuals had the least amount of suspicion.
+
+There were no gender differences in student defensive behaviors.
+
 # Discussion
+
+In this study, self-reported trustworthiness had no influence on perceived privacy invasions. Individuals who were more trustworthy did not perceive less privacy invasions than those with less trustworthiness. Levels of trustworthiness has no influence on how students perceive their privacy being invaded by teachers.
+
+There were gender differences in how female, male, and non-binary individuals perceived their own levels of trust towards others, and how they experienced privacy invasions. Non-binary individuals perceived their teacher's behaviors as being less invasive than female and male individuals. Males perceived their teachers invading their privacy less frequently than female and non-binary individuals. Females had the highest levels of suspicion towards their teachers, and non-binary individuals had the least amount of suspicion.
+
+There were no gender differences in student defensive behaviors. Students were not more defensive towards their teachers depending on student gender. 
 
 \newpage
 
