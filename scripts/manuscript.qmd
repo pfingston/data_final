@@ -17,6 +17,8 @@ library(rio)
 library(janitor)
 library(ggplot2)
 library(papaja)
+library(gt)
+library(gtExtras)
 ```
 
 ```{r}
@@ -53,83 +55,22 @@ communication <- select(communication, -c(2:7))
 ```
 
 ```{r}
-#for ben to do later: create summarize data frames to create into a table
-```
-
-# Data Visualizations
-
-```{r boxplot-gender-ppis-1-score, warning=FALSE, echo=FALSE}
-
-ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
-  geom_boxplot() +
-  theme(legend.position = "none") +
-    scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
-  labs(x = "Gender",
-       y = "Teacher Invasive Behaviors Score",
-       title = "Boxplot of Teacher Invasive Behaviors Score by Gender")
-
-```
-
-```{r boxplot-gender-ppis-2-score, warning=FALSE, echo=FALSE}
-
-ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
-  geom_boxplot() +
-  theme(legend.position = "none") +
-  scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
-  labs(x = "Gender",
-       y = "Student Defensive Behaviors Score",
-       title = "Boxplot of Student Defensive Behaviors Score by Gender")
-
-```
-
-```{r boxplot-gender-ppis-total, warning=FALSE, echo=FALSE}
-
-ggplot(communication, aes(gender, ppis_total, fill=gender)) +
-  geom_boxplot() +
-  theme(legend.position = "none") +
-    scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
-  labs(x = "Gender",
-       y = "Teacher Privacy Invasion Scale Total",
-       title = "Boxplot of Teacher Privacy Invasion Scale Total by Gender")
-
-```
-
-```{r boxplot-gender-ss-score, warning=FALSE, echo=FALSE}
-
-ggplot(communication, aes(gender, ss_score, fill=gender)) +
-  geom_boxplot() + 
-  scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
-  theme(legend.position="none") +
-  labs(x = "Gender",
-       y = "Suspicion Scale Score",
-       title = "Boxplot of Suspicion Scale Score by Gender")
-
-```
-
-```{r}
-#| label: scatterplot
-#| warning: false
-#| message: false
-#| echo: false
-
-model <- lm(ppis_total ~ ss_score, comm)
-modelresults <- apa_print(model)
-slope <- coef(model)[2] %>% round(2)
-
-
-ggplot(comm, aes(ss_score, ppis_total)) +
-  geom_point() +
-  geom_smooth(method = "lm", color="darkgreen") +
-  labs(title = "Student's Trustworthiness and Teacher Privacy Invasions", 
-       x = "Own Precieved Trustworthiness",
-       y = "Teacher Privacy Invasions") +
-   geom_text(x = 30, y = 4,
-     label = sprintf("Slope: %.2f", coef(lm(ppis_total ~ ss_score, data = comm))[2])) +
-  theme_minimal()
-
-mean_age <- mean(comm$age) %>% round(2)
-sd_age <- sd(comm$age) %>% round(2)
-
+ppis_ss_table <- communication %>%
+select(ppis_1_score:ppis_total) %>%
+  pivot_longer(
+  cols = everything(),
+  names_to = "measure",
+  values_to = "score") %>%
+  group_by(measure) %>%
+  summarise(Mean = mean(score, na.rm = TRUE),
+            SD = sd(score, na.rm = TRUE)) %>%
+  pivot_longer(
+    cols = -measure,
+    names_to = "desc",
+    values_to = "value"
+    ) %>%
+  pivot_wider(names_from = measure,
+              values_from = value)
 ```
 
 # Introduction
@@ -150,6 +91,14 @@ Socialization perspectives on gender differences propose that women are more inc
 
 ## Sample
 
+```{r}
+#| echo: false
+#| warning: fale
+#| message: false
+mean_age <- mean(comm$age) %>% round(2)
+sd_age <- sd(comm$age) %>% round(2)
+```
+
 98 participants were recruited primarily through an undergraduate student body located in Minnesota. The participation criteria required that participants be at least 18 years old (*M =* `r mean_age`, *SD =* `r sd_age`) and have interacted with a teacher in a school setting. Demographic information, such as gender identity and ethnic-racial identity, was also collected.
 
 ## Procedure
@@ -160,7 +109,7 @@ Participants were provided with a link to the survey, which was conducted throug
 
 To measure different aspects of student-teacher trust interactions, items were modified from the @ledbetter2012 Parental Privacy Invasions Scale (PPIS) and the @levine1991 Suspicion Scale.
 
-### Modified Parental Privacy Invasions Scale
+### Modified Parental Privacy Invasions Scale: Teacher Privacy Invasions Scale (TPIS)
 
 Eleven items were adapted from the Parental Privacy Invasions Scale to reflect teacher, rather than parental, interactions. Each item was measured on a five-point Likert scale, ranging from 0 to 4, with response options including, "Never", "Rarely", "Often", "Sometimes", and "Always".
 
@@ -168,19 +117,115 @@ Three items were modified the Parental Invasive Behavior subscale of the PPIS to
 
 The other 8 modified items came from the Children's Defensive Behavior subscale, which captured the young adults' self-reports of behaviors to safeguard their privacy from their teachers. An example of an item from this subscale is, " I avoid going to see my teacher outside of normal school/class hours. (such as before or after class, during break, before or after school tutoring)."
 
-### Modified Suspicion Scale
+### Modified Suspicion Scale (SS)
 
 Twelve items were adapted from the Suspicion Scale to capture young adults' suspicion toward their teachers. Each item was measured on a seven-point Likert scale, ranging from 0-6, with response options including, "Strongly Disagree", "Somewhat Disagree", "Disagree", "Neither Agree nor Disagree", "Somewhat Agree", "Agree", and "Strongly Agree". Example items from the scale include, "Basically I am a trusting person", and "Most teachers follow the saying"honesty is the best policy."
 
 # Results
 
+```{r}
+model <- lm(ppis_total ~ ss_score, comm)
+modelresults <- apa_print(model)
+slope <- coef(model)[2] %>% round(2)
+```
+
 We used R (Version 4.3.2; @R) and the R-packages *ggplot2* [@ggplot], *here* [@here], *janitor* [@janitor], *rio* [@rio], and *tidyverse* [@tidy] for all our analyses.
 
-Privacy invasions and self-rated trustworthiness were not found to be correlated. Self-rated trustworthiness was not a significant predictor of privacy invasions (`r modelresults$full_result$ss_score`).
+## Descriptive Statistics
 
-Gender differences existed for teacher invasive behaviors. Non-binary individuals perceived their teachers behaviors as being less invasive than females and males perceptions. Gender differences existed for teacher privacy invasion. Males perceived their teachers invading their privacy less than female and non-binary individuals. There were gender differences in the amount of suspicion towards teachers. Females had the highest levels of suspicion towards their teachers, and non-binary individuals had the least amount of suspicion.
+The means and standard deviations of the TPIS scores and the SS Scores can be shown in Table 1 below.
 
-There were no gender differences in student defensive behaviors.
+```{r}
+#| output: asis
+desc_table <- 
+  gt(ppis_ss_table) %>%
+  cols_label(desc = "Statistic", ppis_1_score = "Teacher Privacy Invasions", ppis_2_score = "Student Trustworthiness", ppis_total = "TPIS Total", ss_score = "Suspicion Scale") %>%
+  tab_caption(caption = "Descriptive Statistics of TPIS and SS Scores ") %>%
+  tab_footnote(footnote = "Table 1.")
+  
+
+desc_table
+```
+
+## Teacher Privacy Invasions and Suspicion Scale
+
+Privacy invasions and self-rated trustworthiness were not found to be correlated. Self-rated trustworthiness was not a significant predictor of privacy invasions (`r modelresults$full_result$ss_score`). A scatterplot of the relationship can be seen in Figure 1, shown below. 
+
+```{r}
+#| label: scatterplot
+#| warning: false
+#| message: false
+#| echo: false
+
+
+ggplot(comm, aes(ss_score, ppis_total)) +
+  geom_point() +
+  geom_smooth(method = "lm", color="darkgreen") +
+  labs(title = "Student's Trustworthiness and Teacher Privacy Invasions", 
+       x = "Own Precieved Trustworthiness",
+       y = "Teacher Privacy Invasions",
+       tag = "Figure 1.") +
+   geom_text(x = 30, y = 4,
+     label = sprintf("Slope: %.2f", coef(lm(ppis_total ~ ss_score, data = comm))[2])) +
+  theme_minimal()
+```
+
+## Gender Differences
+
+Gender differences existed for teacher invasive behaviors. Non-binary individuals perceived their teachers behaviors as being less invasive than females and males perceptions. Gender differences existed for teacher privacy invasion. Males perceived their teachers invading their privacy less than female and non-binary individuals. A boxplot of Teacher Invasive Behaviors scores, split by gender, can be found in Figure #. There were no gender differences in student defensive behaviors. A boxplot of this relationship can be found below in Figure #. There were also no differences in the total Teacher Privacy Invasion scale scores between gender groups, shown in the boxplot in Figure #.
+
+There were gender differences in the amount of suspicion towards teachers. Females had the highest levels of suspicion towards their teachers, and non-binary individuals had the least amount of suspicion. A boxplot of mean Suspicion Scale scores, split by gender, can be found in Figure # below. 
+
+```{r boxplot-gender-ppis-1-score, warning=FALSE, echo=FALSE}
+
+ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
+  geom_boxplot() +
+  theme(legend.position = "none") +
+    scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
+  labs(x = "Gender",
+       y = "Teacher Invasive Behaviors Score",
+       title = "Boxplot of Teacher Invasive Behaviors Score by Gender", 
+       tag = "Figure 2.")
+```
+
+```{r boxplot-gender-ppis-2-score, warning=FALSE, echo=FALSE}
+
+ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
+  geom_boxplot() +
+  theme(legend.position = "none") +
+  scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
+  labs(x = "Gender",
+       y = "Student Defensive Behaviors Score",
+       title = "Boxplot of Student Defensive Behaviors Score by Gender",
+       tag = "Figure 3.") 
+
+```
+
+```{r boxplot-gender-ppis-total, warning=FALSE, echo=FALSE}
+
+ggplot(communication, aes(gender, ppis_total, fill=gender)) +
+  geom_boxplot() +
+  theme(legend.position = "none") +
+    scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
+  labs(x = "Gender",
+       y = "Teacher Privacy Invasion Scale Total",
+       title = "Boxplot of Teacher Privacy Invasion Scale Total by Gender",
+       tag = "Figure 4.")
+
+```
+
+```{r boxplot-gender-ss-score, warning=FALSE, echo=FALSE}
+
+ggplot(communication, aes(gender, ss_score, fill=gender)) +
+  geom_boxplot() + 
+  scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
+  theme(legend.position="none") +
+  labs(x = "Gender",
+       y = "Suspicion Scale Score",
+       title = "Boxplot of Suspicion Scale Score by Gender",
+       tag = "Figure 5.")
+
+```
 
 # Discussion
 
