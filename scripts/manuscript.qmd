@@ -158,6 +158,7 @@ Privacy invasions and self-rated trustworthiness were not found to be correlated
 
 ```{r}
 #| label: scatterplot
+#| fig-width: 7
 
 ggplot(comm, aes(ss_score, ppis_total)) +
   geom_point() +
@@ -179,6 +180,7 @@ There were gender differences in the amount of suspicion towards teachers. Femal
 
 ```{r}
 #| label: boxplot-gender-ppis-1-score
+#| fig-width: 7
 
 ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
   geom_boxplot() +
@@ -193,6 +195,7 @@ ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
 
 ```{r}
 #| label: boxplot-gender-ppis-2-score
+#| fig-width: 7
 ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
   geom_boxplot() +
   theme(legend.position = "none") +
@@ -207,6 +210,7 @@ ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
 
 ```{r}
 #| label: boxplot-gender-ppis-total
+#| fig-width: 7
 
 ggplot(communication, aes(gender, ppis_total, fill=gender)) +
   geom_boxplot() +
@@ -222,6 +226,7 @@ ggplot(communication, aes(gender, ppis_total, fill=gender)) +
 
 ```{r}
 #| label: boxplot-gender-ss-score
+#| fig-width: 7
 ggplot(communication, aes(gender, ss_score, fill=gender)) +
   geom_boxplot() + 
   scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
