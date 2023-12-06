@@ -1,5 +1,5 @@
 ---
-title: "manuscript"
+title: "EDLD 651 Final Paper"
 format: pdf
 editor: visual
 author: "Leah Peterson, Alexus Rock, and Ben Pfingston"
@@ -38,7 +38,7 @@ comm <- communication %>%
 
 comm <- comm %>%
   mutate(ppis_total = ppis_1_score + ppis_2_score,
-         age = as.numeric(age)) %>%  # Convert age column to numeric
+         age = as.numeric(age)) %>%  # Converting age column to numeric
   filter(!is.na(age))
 ```
 
@@ -62,8 +62,8 @@ select(ppis_1_score:ppis_total) %>%
   names_to = "measure",
   values_to = "score") %>%
   group_by(measure) %>%
-  summarise(Mean = mean(score, na.rm = TRUE),
-            SD = sd(score, na.rm = TRUE)) %>%
+  summarise(Mean = round(mean(score, na.rm = TRUE), 2),
+            SD = round(sd(score, na.rm = TRUE),2)) %>%
   pivot_longer(
     cols = -measure,
     names_to = "desc",
@@ -72,6 +72,12 @@ select(ppis_1_score:ppis_total) %>%
   pivot_wider(names_from = measure,
               values_from = value)
 ```
+
+# Abstract
+
+By drawing on theories of gender socialization and trust violations, the current study explores the dynamics of trust and privacy invasions in student-teacher relationships. Additionally, this study aims to investigate how gender may impact a young adult's perception of these topics. We predict that individuals who are more trustworthy will perceive fewer privacy invasions from teachers in their life. A sample of 98 young adults from a Minnesota undergraduate student body participated in this study. To measure young adult perceptions of trustworthiness, prior teacher privacy invasions, and suspicion towards teachers, modified scales, including the Parental Privacy Invasions Scale and the Suspicion Scale, were used. The results indicate that self-reported trustworthiness does not significantly impact the perception of teacher privacy invasions. However, gender differences were observed in how individuals perceive and experience their teacher behaviors. This study adds to our understanding of the complex interplay between trust, gender, and privacy invasions in student-teacher relationships. Further, the findings emphasize the complexity of trust dynamics in student-teacher relationships and suggest young adults perceive and respond to invasive behaviors in educational settings differently based on their gender identity.
+
+\newpage
 
 # Introduction
 
@@ -92,9 +98,6 @@ Socialization perspectives on gender differences propose that women are more inc
 ## Sample
 
 ```{r}
-#| echo: false
-#| warning: fale
-#| message: false
 mean_age <- mean(comm$age) %>% round(2)
 sd_age <- sd(comm$age) %>% round(2)
 ```
@@ -129,11 +132,13 @@ modelresults <- apa_print(model)
 slope <- coef(model)[2] %>% round(2)
 ```
 
-We used R (Version 4.3.2; @R) and the R-packages *ggplot2* [@ggplot], *here* [@here], *janitor* [@janitor], *rio* [@rio], and *tidyverse* [@tidy] for all our analyses.
+We used R (Version 4.3.2; @R) and the R-packages *ggplot2* [@ggplot], *gt* [@gt], *gtExtras* [@gtE], *here* [@here], *janitor* [@janitor], *papaja* [@papaja], *rio* [@rio], and *tidyverse* [@tidy] for all our analyses.
 
 ## Descriptive Statistics
 
 The means and standard deviations of the TPIS scores and the SS Scores can be shown in Table 1 below.
+
+\newpage
 
 ```{r}
 #| output: asis
@@ -149,14 +154,10 @@ desc_table
 
 ## Teacher Privacy Invasions and Suspicion Scale
 
-Privacy invasions and self-rated trustworthiness were not found to be correlated. Self-rated trustworthiness was not a significant predictor of privacy invasions (`r modelresults$full_result$ss_score`). A scatterplot of the relationship can be seen in Figure 1, shown below. 
+Privacy invasions and self-rated trustworthiness were not found to be correlated. Self-rated trustworthiness was not a significant predictor of privacy invasions (`r modelresults$full_result$ss_score`). A scatterplot of the relationship can be seen in Figure 1, shown below.
 
 ```{r}
 #| label: scatterplot
-#| warning: false
-#| message: false
-#| echo: false
-
 
 ggplot(comm, aes(ss_score, ppis_total)) +
   geom_point() +
@@ -172,11 +173,12 @@ ggplot(comm, aes(ss_score, ppis_total)) +
 
 ## Gender Differences
 
-Gender differences existed for teacher invasive behaviors. Non-binary individuals perceived their teachers behaviors as being less invasive than females and males perceptions. Gender differences existed for teacher privacy invasion. Males perceived their teachers invading their privacy less than female and non-binary individuals. A boxplot of Teacher Invasive Behaviors scores, split by gender, can be found in Figure #. There were no gender differences in student defensive behaviors. A boxplot of this relationship can be found below in Figure #. There were also no differences in the total Teacher Privacy Invasion scale scores between gender groups, shown in the boxplot in Figure #.
+Gender differences existed for teacher invasive behaviors. Non-binary individuals perceived their teachers behaviors as being less invasive than females and males perceptions. Gender differences existed for teacher privacy invasion. Males perceived their teachers invading their privacy less than female and non-binary individuals. A boxplot of Teacher Invasive Behaviors scores, split by gender, can be found in Figure 2. There were no gender differences in student defensive behaviors. A boxplot of this relationship can be found below in Figure 3. There were also no differences in the total Teacher Privacy Invasion scale scores between gender groups, shown in the boxplot in Figure 4.
 
-There were gender differences in the amount of suspicion towards teachers. Females had the highest levels of suspicion towards their teachers, and non-binary individuals had the least amount of suspicion. A boxplot of mean Suspicion Scale scores, split by gender, can be found in Figure # below. 
+There were gender differences in the amount of suspicion towards teachers. Females had the highest levels of suspicion towards their teachers, and non-binary individuals had the least amount of suspicion. A boxplot of mean Suspicion Scale scores, split by gender, can be found in Figure 5 below.
 
-```{r boxplot-gender-ppis-1-score, warning=FALSE, echo=FALSE}
+```{r}
+#| label: boxplot-gender-ppis-1-score
 
 ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
   geom_boxplot() +
@@ -185,11 +187,12 @@ ggplot(communication, aes(gender, ppis_1_score, fill=gender)) +
   labs(x = "Gender",
        y = "Teacher Invasive Behaviors Score",
        title = "Boxplot of Teacher Invasive Behaviors Score by Gender", 
-       tag = "Figure 2.")
+       tag = "Figure 2.")+
+  theme_minimal()
 ```
 
-```{r boxplot-gender-ppis-2-score, warning=FALSE, echo=FALSE}
-
+```{r}
+#| label: boxplot-gender-ppis-2-score
 ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
   geom_boxplot() +
   theme(legend.position = "none") +
@@ -197,11 +200,13 @@ ggplot(communication, aes(gender, ppis_2_score, fill=gender)) +
   labs(x = "Gender",
        y = "Student Defensive Behaviors Score",
        title = "Boxplot of Student Defensive Behaviors Score by Gender",
-       tag = "Figure 3.") 
+       tag = "Figure 3.") +
+  theme_minimal()
 
 ```
 
-```{r boxplot-gender-ppis-total, warning=FALSE, echo=FALSE}
+```{r}
+#| label: boxplot-gender-ppis-total
 
 ggplot(communication, aes(gender, ppis_total, fill=gender)) +
   geom_boxplot() +
@@ -210,12 +215,13 @@ ggplot(communication, aes(gender, ppis_total, fill=gender)) +
   labs(x = "Gender",
        y = "Teacher Privacy Invasion Scale Total",
        title = "Boxplot of Teacher Privacy Invasion Scale Total by Gender",
-       tag = "Figure 4.")
+       tag = "Figure 4.") +
+  theme_minimal()
 
 ```
 
-```{r boxplot-gender-ss-score, warning=FALSE, echo=FALSE}
-
+```{r}
+#| label: boxplot-gender-ss-score
 ggplot(communication, aes(gender, ss_score, fill=gender)) +
   geom_boxplot() + 
   scale_x_discrete(limits = c("Female", "Male", "Non-binary")) +
@@ -223,7 +229,8 @@ ggplot(communication, aes(gender, ss_score, fill=gender)) +
   labs(x = "Gender",
        y = "Suspicion Scale Score",
        title = "Boxplot of Suspicion Scale Score by Gender",
-       tag = "Figure 5.")
+       tag = "Figure 5.") +
+  theme_minimal()
 
 ```
 
@@ -233,7 +240,7 @@ In this study, self-reported trustworthiness had no influence on perceived priva
 
 There were gender differences in how female, male, and non-binary individuals perceived their own levels of trust towards others, and how they experienced privacy invasions. Non-binary individuals perceived their teacher's behaviors as being less invasive than female and male individuals. Males perceived their teachers invading their privacy less frequently than female and non-binary individuals. Females had the highest levels of suspicion towards their teachers, and non-binary individuals had the least amount of suspicion.
 
-There were no gender differences in student defensive behaviors. Students were not more defensive towards their teachers depending on student gender. 
+There were no gender differences in student defensive behaviors. This indicates that students were not more defensive towards their teachers depending on student gender.
 
 \newpage
 
